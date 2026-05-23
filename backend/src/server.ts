@@ -18,26 +18,17 @@ app.use((req, res, next) => {
   next();
 });
 
-// Serve static uploads
-app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
-app.use('/uploads', express.static(path.join(__dirname, '../uploads'))); // Fallback
-
-// EXTREME HEALTH CHECK (No Prisma import yet)
+// EXTREME HEALTH CHECK (No Prisma import)
 app.get('/api/health', (req, res) => {
   const info: any = {
     status: 'ok',
-    message: 'API is alive',
+    message: 'API is alive - ROUTES DISABLED FOR DEBUGGING',
     cwd: process.cwd(),
     __dirname: __dirname,
     env: {
       NODE_ENV: process.env.NODE_ENV,
       VERCEL: process.env.VERCEL,
       DATABASE_URL: process.env.DATABASE_URL,
-    },
-    system: {
-      platform: process.platform,
-      arch: process.arch,
-      version: process.version
     },
     paths: {}
   };
@@ -47,8 +38,6 @@ app.get('/api/health', (req, res) => {
     path.join(process.cwd(), 'backend', 'dev.db'),
     path.join(process.cwd(), 'prisma', 'dev.db'),
     path.join(process.cwd(), 'backend', 'prisma', 'dev.db'),
-    path.resolve(__dirname, '..', '..', 'prisma', 'dev.db'),
-    path.resolve(__dirname, '..', '..', '..', 'prisma', 'dev.db'),
     '/tmp/dev.db'
   ];
 
@@ -56,7 +45,6 @@ app.get('/api/health', (req, res) => {
     try {
       info.paths[p] = {
         exists: fs.existsSync(p),
-        stats: fs.existsSync(p) ? fs.statSync(p) : null
       };
     } catch (e: any) {
       info.paths[p] = { error: e.message };
@@ -66,19 +54,20 @@ app.get('/api/health', (req, res) => {
   res.json(info);
 });
 
-// Import routes AFTER health check to isolate crashes
+// Import routes COMMENTED OUT for debugging
+/*
 import authRoutes from './routes/authRoutes';
 import productRoutes from './routes/productRoutes';
 import orderRoutes from './routes/orderRoutes';
 import messageRoutes from './routes/messageRoutes';
 import settingsRoutes from './routes/settingsRoutes';
 
-// ROUTES
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/settings', settingsRoutes);
+*/
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
