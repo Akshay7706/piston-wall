@@ -16,9 +16,50 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// Basic health check
+import fs from 'fs';
+import path from 'path';
+
+// Basic health check with directory checks for debugging
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Piston Wall API is running' });
+  const info: any = {
+    status: 'ok',
+    message: 'Piston Wall API is running',
+    cwd: process.cwd(),
+    __dirname: __dirname,
+    env: {
+      NODE_ENV: process.env.NODE_ENV,
+      VERCEL: process.env.VERCEL,
+      DATABASE_URL: process.env.DATABASE_URL,
+    },
+    pathsChecked: {}
+  };
+
+  const checkPaths = [
+    path.join(process.cwd(), 'dev.db'),
+    path.join(process.cwd(), 'backend', 'dev.db'),
+    path.join(process.cwd(), 'prisma', 'dev.db'),
+    path.join(process.cwd(), 'backend', 'prisma', 'dev.db'),
+    path.resolve(__dirname, 'dev.db'),
+    path.resolve(__dirname, '..', 'dev.db'),
+    path.resolve(__dirname, '..', '..', 'dev.db'),
+    path.resolve(__dirname, '..', '..', '..', 'dev.db'),
+    path.resolve(__dirname, '..', '..', '..', 'prisma', 'dev.db'),
+    path.resolve(__dirname, '..', '..', 'prisma', 'dev.db'),
+    '/tmp/dev.db'
+  ];
+
+  for (const p of checkPaths) {
+    try {
+      info.pathsChecked[p] = {
+        exists: fs.existsSync(p),
+        size: fs.existsSync(p) ? fs.statSync(p).size : 0
+      };
+    } catch (e: any) {
+      info.pathsChecked[p] = { error: e.message };
+    }
+  }
+
+  res.json(info);
 });
 
 // Routes
