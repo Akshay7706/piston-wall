@@ -32,11 +32,14 @@ model Product {
 }
 
 model Order {
-  id            String   @id @default(uuid())
-  customerName  String
-  customerEmail String
-  totalAmount   Float
-  status        String   @default("PENDING") // PENDING, COMPLETED, CANCELLED
+  id              String   @id @default(uuid())
+  customerName    String
+  customerEmail   String
+  customerPhone   String
+  whatsapp        String
+  shippingAddress String
+  totalAmount     Float
+  status          String   @default("PENDING") // PENDING, COMPLETED, CANCELLED
   createdAt     DateTime @default(now())
 }
 
@@ -47,4 +50,10 @@ model Message {
   subject   String
   message   String
   createdAt DateTime @default(now())
+}
+
+model Setting {
+  id    String @id @default(uuid())
+  key   String @unique
+  value String
 }

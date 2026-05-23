@@ -5,6 +5,9 @@ interface Order {
   id: string;
   customerName: string;
   customerEmail: string;
+  customerPhone: string;
+  whatsapp?: string;
+  shippingAddress: string;
   totalAmount: number;
   status: string;
   createdAt: string;
@@ -52,44 +55,58 @@ const AdminOrders: React.FC = () => {
   return (
     <div className="admin-orders">
       <h1>Orders Management</h1>
-      <div className="products-list"> {/* Reusing list style */}
-        <table>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Customer</th>
-              <th>Email</th>
-              <th>Total</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((order) => (
-              <tr key={order.id}>
-                <td>{new Date(order.createdAt).toLocaleDateString()}</td>
-                <td>{order.customerName}</td>
-                <td>{order.customerEmail}</td>
-                <td>${order.totalAmount.toFixed(2)}</td>
-                <td>
-                  <span className={`status-badge ${order.status.toLowerCase()}`}>
-                    {order.status}
-                  </span>
-                </td>
-                <td>
-                  <select 
-                    value={order.status} 
-                    onChange={(e) => handleStatusUpdate(order.id, e.target.value)}
-                  >
-                    <option value="PENDING">PENDING</option>
-                    <option value="COMPLETED">COMPLETED</option>
-                    <option value="CANCELLED">CANCELLED</option>
-                  </select>
-                </td>
+      <div className="products-list">
+        <div className="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Customer Details</th>
+                <th>Shipping Address</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {orders.map((order) => (
+                <tr key={order.id}>
+                  <td>{new Date(order.createdAt).toLocaleDateString()}</td>
+                  <td>
+                    <div><strong>{order.customerName}</strong></div>
+                    <div style={{ fontSize: '0.85rem' }}>{order.customerEmail}</div>
+                    <div style={{ fontSize: '0.85rem' }}>Tel: {order.customerPhone}</div>
+                    {order.whatsapp && (
+                      <div style={{ fontSize: '0.85rem', color: '#059669' }}>
+                        WA: {order.whatsapp}
+                      </div>
+                    )}
+                  </td>
+                  <td style={{ maxWidth: '200px', fontSize: '0.9rem' }}>
+                    {order.shippingAddress}
+                  </td>
+                  <td>${order.totalAmount.toFixed(2)}</td>
+                  <td>
+                    <span className={`status-badge ${order.status.toLowerCase()}`}>
+                      {order.status}
+                    </span>
+                  </td>
+                  <td>
+                    <select 
+                      className="admin-select"
+                      value={order.status} 
+                      onChange={(e) => handleStatusUpdate(order.id, e.target.value)}
+                    >
+                      <option value="PENDING">PENDING</option>
+                      <option value="COMPLETED">COMPLETED</option>
+                      <option value="CANCELLED">CANCELLED</option>
+                    </select>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

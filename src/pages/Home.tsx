@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, ChevronRight, Star, ArrowUpRight } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, Star, ArrowUpRight, Quote, CheckCircle } from 'lucide-react';
 import Logo from '../components/Logo';
+import PromoBanner from '../components/PromoBanner';
 import API_URL from '../config';
+import { getImageUrl } from '../utils/image';
 import './Home.css';
 
 interface Product {
@@ -15,6 +17,7 @@ interface Product {
 
 export default function Home() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const fetchFeatured = async () => {
@@ -28,6 +31,20 @@ export default function Home() {
     };
     fetchFeatured();
   }, []);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const { scrollLeft, clientWidth } = scrollRef.current;
+      const scrollTo = direction === 'left' 
+        ? scrollLeft - clientWidth * 0.8 
+        : scrollLeft + clientWidth * 0.8;
+      
+      scrollRef.current.scrollTo({
+        left: scrollTo,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   return (
     <div className="home">
@@ -64,6 +81,8 @@ export default function Home() {
         </div>
       </section>
 
+      <PromoBanner />
+
       {/* Featured Categories */}
       <section className="categories container" id="categories">
         <div className="section-header flex-between">
@@ -75,32 +94,32 @@ export default function Home() {
         </div>
         
         <div className="category-grid">
-          <div className="category-card glass-panel group">
-            <div className="card-image-placeholder"></div>
+          <Link to="/shop" className="category-card group">
+            <div className="card-image-placeholder" style={{ backgroundColor: '#1a1a2e' }}></div>
             <div className="card-content">
               <h3>3D Diecast Frames</h3>
               <p>Precision scaled models encased in premium acrylic and carbon fiber backing.</p>
-              <span className="card-action">Explore <ArrowRight size={16} /></span>
+              <span className="card-action">View Collections <ArrowRight size={16} /></span>
             </div>
-          </div>
+          </Link>
 
-          <div className="category-card glass-panel group">
-            <div className="card-image-placeholder alt-bg"></div>
+          <Link to="/shop" className="category-card group">
+            <div className="card-image-placeholder" style={{ backgroundColor: '#2c2c3e' }}></div>
             <div className="card-content">
               <h3>Custom Edits</h3>
-              <p>Your car, your build. Upload your photo and we immortalize it.</p>
-              <span className="card-action">Commission <ArrowRight size={16} /></span>
+              <p>Your car, your build. Upload your photo and we immortalize it in a premium frame.</p>
+              <span className="card-action">Commission Piece <ArrowRight size={16} /></span>
             </div>
-          </div>
+          </Link>
 
-          <div className="category-card glass-panel group">
-            <div className="card-image-placeholder alt-bg-2"></div>
+          <Link to="/shop" className="category-card group">
+            <div className="card-image-placeholder" style={{ backgroundColor: '#121212' }}></div>
             <div className="card-content">
               <h3>Premium Posters</h3>
-              <p>High-octane prints on museum-quality archival paper.</p>
-              <span className="card-action">Shop Prints <ArrowRight size={16} /></span>
+              <p>High-octane prints on museum-quality archival paper for the modern collector.</p>
+              <span className="card-action">Shop Gallery <ArrowRight size={16} /></span>
             </div>
-          </div>
+          </Link>
         </div>
       </section>
 
@@ -120,7 +139,7 @@ export default function Home() {
               featuredProducts.map((product) => (
                 <div key={product.id} className="product-card glass-panel">
                   <div className="product-image-container" style={{ 
-                    backgroundImage: `url(${product.imageUrl})`,
+                    backgroundImage: `url(${getImageUrl(product.imageUrl)})`,
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     backgroundColor: '#1a1a1a'
@@ -183,68 +202,94 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Customer Reviews */}
+      {/* Collector Testimonials */}
       <section className="reviews" id="reviews">
         <div className="container">
           <div className="section-header-center text-center">
-            <span className="section-tag">What people say</span>
-            <h2 className="light-text">Customer Reviews</h2>
+            <span className="section-tag">Authenticity</span>
+            <h2 className="light-text">The Collector's Voice</h2>
+            <p className="section-subtitle light-text">Trusted by automotive enthusiasts worldwide.</p>
           </div>
 
-          <div className="reviews-grid">
-            <div className="review-card glass-panel">
-              <div className="stars">
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
+          <div className="slider-wrapper">
+            <button className="slider-nav-btn left" onClick={() => scroll('left')} aria-label="Previous testimonial">
+              <ChevronLeft size={24} />
+            </button>
+            
+            <div className="reviews-grid" ref={scrollRef}>
+              <div className="review-card premium-garage-card">
+                <div className="card-accent-line"></div>
+                <Quote className="quote-icon" size={32} />
+                <div className="stars">
+                  <Star size={14} fill="currentColor" />
+                  <Star size={14} fill="currentColor" />
+                  <Star size={14} fill="currentColor" />
+                  <Star size={14} fill="currentColor" />
+                  <Star size={14} fill="currentColor" />
+                </div>
+                <p className="review-text">"The Porsche 911 GT3 RS frame is a masterpiece. The carbon fiber backing and museum-quality glass make it the centerpiece of my home office. Truly world-class craftsmanship."</p>
+                <div className="review-author">
+                  <div className="author-avatar-wrapper">
+                    <div className="author-avatar">RK</div>
+                    <CheckCircle className="verified-badge" size={16} />
+                  </div>
+                  <div>
+                    <div className="author-name">Rahul K.</div>
+                    <div className="author-role">Diecast Collector</div>
+                  </div>
+                </div>
               </div>
-              <p className="review-text">"Absolutely love my Ferrari 250 GTO print. The quality is incredible — sharp, rich colours, and it looks stunning on my garage wall."</p>
-              <div className="review-author">
-                <div className="author-avatar">RK</div>
-                <div>
-                  <div className="author-name">Rahul K.</div>
-                  <div className="author-location">Bangalore, India</div>
+
+              <div className="review-card premium-garage-card">
+                <div className="card-accent-line"></div>
+                <Quote className="quote-icon" size={32} />
+                <div className="stars">
+                  <Star size={14} fill="currentColor" />
+                  <Star size={14} fill="currentColor" />
+                  <Star size={14} fill="currentColor" />
+                  <Star size={14} fill="currentColor" />
+                  <Star size={14} fill="currentColor" />
+                </div>
+                <p className="review-text">"Commissioned a bespoke frame for my first project car. The level of detail in the digital edit matched my real build perfectly. This isn't just art; it's a piece of my car's history."</p>
+                <div className="review-author">
+                  <div className="author-avatar-wrapper">
+                    <div className="author-avatar">AS</div>
+                    <CheckCircle className="verified-badge" size={16} />
+                  </div>
+                  <div>
+                    <div className="author-name">Arjun S.</div>
+                    <div className="author-role">Bespoke Client</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="review-card premium-garage-card">
+                <div className="card-accent-line"></div>
+                <Quote className="quote-icon" size={32} />
+                <div className="stars">
+                  <Star size={14} fill="currentColor" />
+                  <Star size={14} fill="currentColor" />
+                  <Star size={14} fill="currentColor" />
+                  <Star size={14} fill="currentColor" />
+                  <Star size={14} fill="currentColor" />
+                </div>
+                <p className="review-text">"The vault-grade packaging was impressive. My JDM Legends poster arrived in pristine showroom condition. The print quality is so sharp you can see the grain in the tarmac."</p>
+                <div className="review-author">
+                  <div className="author-avatar-wrapper">
+                    <div className="author-avatar">PM</div>
+                    <CheckCircle className="verified-badge" size={16} />
+                  </div>
+                  <div>
+                    <div className="author-name">Priya M.</div>
+                    <div className="author-role">Automotive Enthusiast</div>
+                  </div>
                 </div>
               </div>
             </div>
 
-            <div className="review-card glass-panel">
-              <div className="stars">
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-              </div>
-              <p className="review-text">"Ordered a custom poster of my Maruti 800 — sounds funny but the result was jaw-dropping. They made it look like a proper race car poster!"</p>
-              <div className="review-author">
-                <div className="author-avatar">AS</div>
-                <div>
-                  <div className="author-name">Arjun S.</div>
-                  <div className="author-location">Chennai, India</div>
-                </div>
-              </div>
-            </div>
-
-            <div className="review-card glass-panel">
-              <div className="stars">
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-                <Star size={16} fill="currentColor" />
-              </div>
-              <p className="review-text">"Fast delivery, great packaging, and the print quality is top notch. I've already ordered three and planning more. Highly recommend!"</p>
-              <div className="review-author">
-                <div className="author-avatar">PM</div>
-                <div>
-                  <div className="author-name">Priya M.</div>
-                  <div className="author-location">Kochi, India</div>
-                </div>
-              </div>
-            </div>
+            <button className="slider-nav-btn right" onClick={() => scroll('right')} aria-label="Next testimonial">
+              <ChevronRight size={24} />
+            </button>
           </div>
         </div>
       </section>

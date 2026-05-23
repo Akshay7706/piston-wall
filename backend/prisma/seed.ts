@@ -25,40 +25,64 @@ async function main() {
 
   console.log('Admin user created: admin / adminpassword123');
 
-  // Create Sample Products
+  // Create Sample Products matching the automotive niche
   const products = [
     {
-      name: 'V8 Piston Clock',
-      description: 'A desk clock made from a real V8 engine piston. Polished finish with a high-quality quartz movement.',
+      name: 'Porsche 911 GT3 RS 3D Frame',
+      description: '1:24 scale diecast mounted on a carbon-fiber backboard with a sleek black wood shadow box frame.',
+      price: 149.99,
+      imageUrl: '/assets/porsche-frame.jpg',
+      category: 'Diecast Frames',
+      stock: 10,
+    },
+    {
+      name: 'Nissan GT-R R35 JDM 3D Frame',
+      description: '1:24 scale replica of the legendary Godzilla, featuring custom acrylic lighting effects inside.',
+      price: 139.99,
+      imageUrl: '/assets/gtr-frame.jpg',
+      category: 'Diecast Frames',
+      stock: 12,
+    },
+    {
+      name: 'Custom Car Edit Frame',
+      description: 'Your own car, immortalized. Provide a photo, and we craft a custom digital edit in a premium frame.',
       price: 89.99,
-      imageUrl: '/assets/piston-clock.jpg',
-      category: 'Decor',
-      stock: 15,
+      imageUrl: '/assets/custom-frame.jpg',
+      category: 'Custom Frames',
+      stock: 100,
     },
     {
-      name: 'Turbocharger Lamp',
-      description: 'Industrial style lamp featuring a genuine salvaged turbocharger housing. Perfect for any gearhead cave.',
-      price: 149.50,
-      imageUrl: '/assets/turbo-lamp.jpg',
-      category: 'Lighting',
-      stock: 5,
-    },
-    {
-      name: 'Connecting Rod Bottle Opener',
-      description: 'Heavy-duty bottle opener crafted from a forged connecting rod.',
-      price: 24.99,
-      imageUrl: '/assets/conrod-opener.jpg',
-      category: 'Accessories',
+      name: 'JDM Legends Premium Poster',
+      description: 'Museum-quality archival paper poster featuring hand-drawn retro illustrations of classic Japanese sport cars.',
+      price: 29.99,
+      imageUrl: '/assets/jdm-poster.jpg',
+      category: 'Car Posters',
       stock: 50,
     },
     {
-      name: 'Brake Disc Wall Clock',
-      description: 'Large wall clock made from a cross-drilled performance brake rotor.',
-      price: 120.00,
-      imageUrl: '/assets/brake-clock.jpg',
-      category: 'Decor',
+      name: 'Ferrari F40 Classic Blueprint',
+      description: 'High-definition blueprint print of the iconic Ferrari F40 in a minimalist aluminum frame.',
+      price: 59.99,
+      imageUrl: '/assets/f40-blueprint.jpg',
+      category: 'Other Frames',
       stock: 8,
     },
+    {
+      name: 'Turbocharger Housing Lamp',
+      description: 'Genuine salvaged turbocharger housing converted into a high-end industrial desk lamp.',
+      price: 199.00,
+      imageUrl: '/assets/turbo-lamp.jpg',
+      category: 'Lighting',
+      stock: 3,
+    },
+    {
+      name: 'V8 Piston Wall Clock',
+      description: 'Real V8 engine piston converted into a heavy-duty wall clock. Polished finish.',
+      price: 110.00,
+      imageUrl: '/assets/piston-clock.jpg',
+      category: 'Decor',
+      stock: 5,
+    }
   ];
 
   for (const product of products) {
@@ -67,7 +91,7 @@ async function main() {
     });
   }
 
-  console.log('Sample products seeded');
+  console.log('Automotive sample products seeded');
 }
 
 main()

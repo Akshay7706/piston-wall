@@ -50,24 +50,28 @@ const AdminMessages: React.FC = () => {
 
   return (
     <div className="admin-messages">
-      <h1>Contact Messages</h1>
-      <div className="messages-list">
+      <h1>Collector Messages</h1>
+      <div className="messages-list-container">
         {messages.length === 0 ? (
-          <p>No messages yet.</p>
+          <div className="no-messages announcement-card text-center">
+            <p>No messages in the vault yet.</p>
+          </div>
         ) : (
           messages.map((msg) => (
-            <div key={msg.id} className="message-card">
-              <div className="message-header">
-                <h3>{msg.subject}</h3>
-                <span className="message-date">{new Date(msg.createdAt).toLocaleDateString()}</span>
+            <div key={msg.id} className="message-card-admin">
+              <div className="message-header-admin">
+                <div className="sender-info">
+                  <h3>{msg.subject}</h3>
+                  <p>From: <strong>{msg.name}</strong> ({msg.email})</p>
+                </div>
+                <span className="message-date">{new Date(msg.createdAt).toLocaleString()}</span>
               </div>
-              <div className="message-info">
-                <strong>From:</strong> {msg.name} ({msg.email})
-              </div>
-              <div className="message-body">
+              <div className="message-body-admin">
                 {msg.message}
               </div>
-              <button className="delete-btn" onClick={() => handleDelete(msg.id)}>Delete Message</button>
+              <div className="message-footer-admin">
+                <button className="delete-btn" onClick={() => handleDelete(msg.id)}>Remove Message</button>
+              </div>
             </div>
           ))
         )}

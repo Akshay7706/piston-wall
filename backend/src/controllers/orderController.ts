@@ -3,11 +3,14 @@ import prisma from '../utils/prisma';
 
 export const createOrder = async (req: Request, res: Response) => {
   try {
-    const { customerName, customerEmail, totalAmount } = req.body;
+    const { customerName, customerEmail, customerPhone, whatsapp, shippingAddress, totalAmount } = req.body;
     const order = await prisma.order.create({
       data: {
         customerName,
         customerEmail,
+        customerPhone,
+        whatsapp,
+        shippingAddress,
         totalAmount: parseFloat(totalAmount),
       },
     });

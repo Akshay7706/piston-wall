@@ -32,12 +32,18 @@ export const getProductById = async (req: Request, res: Response) => {
 export const createProduct = async (req: Request, res: Response) => {
   try {
     const { name, description, price, imageUrl, category, stock } = req.body;
+
+    let finalImageUrl = imageUrl;
+    if (req.file) {
+      finalImageUrl = `/uploads/${req.file.filename}`;
+    }
+
     const product = await prisma.product.create({
       data: {
         name,
         description,
         price: parseFloat(price),
-        imageUrl,
+        imageUrl: finalImageUrl,
         category,
         stock: parseInt(stock),
       },
@@ -53,13 +59,19 @@ export const updateProduct = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { name, description, price, imageUrl, category, stock } = req.body;
+
+    let finalImageUrl = imageUrl;
+    if (req.file) {
+      finalImageUrl = `/uploads/${req.file.filename}`;
+    }
+
     const product = await prisma.product.update({
       where: { id: id as string },
       data: {
         name,
         description,
         price: price ? parseFloat(price) : undefined,
-        imageUrl,
+        imageUrl: finalImageUrl,
         category,
         stock: stock !== undefined ? parseInt(stock) : undefined,
       },
