@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import API_URL from '../../config';
 
 interface Order {
   id: string;
@@ -15,7 +16,7 @@ const AdminOrders: React.FC = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/orders', {
+      const response = await fetch(`${API_URL}/orders`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();
@@ -31,7 +32,7 @@ const AdminOrders: React.FC = () => {
 
   const handleStatusUpdate = async (id: string, newStatus: string) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/orders/${id}/status`, {
+      const response = await fetch(`${API_URL}/orders/${id}/status`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',

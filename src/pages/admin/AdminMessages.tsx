@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import API_URL from '../../config';
 import './AdminMessages.css';
 
 interface Message {
@@ -16,7 +17,7 @@ const AdminMessages: React.FC = () => {
 
   const fetchMessages = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/messages', {
+      const response = await fetch(`${API_URL}/messages`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await response.json();
@@ -34,7 +35,7 @@ const AdminMessages: React.FC = () => {
     if (!window.confirm('Delete this message?')) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/messages/${id}`, {
+      const response = await fetch(`${API_URL}/messages/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });

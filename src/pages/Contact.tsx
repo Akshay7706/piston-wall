@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Mail, Phone, MapPin, ChevronDown } from 'lucide-react';
+import API_URL from '../config';
 import './Contact.css';
 
 interface FaqItem {
@@ -47,7 +48,7 @@ export default function Contact() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/messages', {
+      const response = await fetch(`${API_URL}/messages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

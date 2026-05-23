@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import API_URL from '../../config';
 import './AdminDashboard.css';
 
 const AdminDashboard: React.FC = () => {
@@ -12,11 +13,11 @@ const AdminDashboard: React.FC = () => {
     const fetchStats = async () => {
       try {
         const [productsRes, ordersRes, messagesRes] = await Promise.all([
-          fetch('http://localhost:5000/api/products'),
-          fetch('http://localhost:5000/api/orders', {
+          fetch(`${API_URL}/products`),
+          fetch(`${API_URL}/orders`, {
             headers: { Authorization: `Bearer ${localStorage.getItem('adminToken')}` },
           }),
-          fetch('http://localhost:5000/api/messages', {
+          fetch(`${API_URL}/messages`, {
             headers: { Authorization: `Bearer ${localStorage.getItem('adminToken')}` },
           }),
         ]);

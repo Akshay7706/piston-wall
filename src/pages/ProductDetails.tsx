@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Star, Shield, Truck, AlertCircle, ArrowLeft } from 'lucide-react';
+import API_URL from '../config';
 import './ProductDetails.css';
 
 interface Product {
@@ -25,7 +26,7 @@ export default function ProductDetails() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/api/products/${id}`);
+        const response = await fetch(`${API_URL}/products/${id}`);
         if (response.ok) {
           const data = await response.json();
           setProduct({ ...data, rating: 5.0 });
@@ -45,7 +46,7 @@ export default function ProductDetails() {
     setIsOrdering(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/orders', {
+      const response = await fetch(`${API_URL}/orders`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

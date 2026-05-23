@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import API_URL from '../../config';
 import './AdminProducts.css';
 
 interface Product {
@@ -27,7 +28,7 @@ const AdminProducts: React.FC = () => {
 
   const fetchProducts = async () => {
     try {
-      const response = await fetch('http://localhost:5000/api/products');
+      const response = await fetch(`${API_URL}/products`);
       const data = await response.json();
       setProducts(data);
     } catch (error) {
@@ -50,8 +51,8 @@ const AdminProducts: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const url = isEditing 
-      ? `http://localhost:5000/api/products/${currentProduct.id}` 
-      : 'http://localhost:5000/api/products';
+      ? `${API_URL}/products/${currentProduct.id}` 
+      : `${API_URL}/products`;
     const method = isEditing ? 'PUT' : 'POST';
 
     try {
@@ -84,7 +85,7 @@ const AdminProducts: React.FC = () => {
     if (!window.confirm('Are you sure you want to delete this product?')) return;
 
     try {
-      const response = await fetch(`http://localhost:5000/api/products/${id}`, {
+      const response = await fetch(`${API_URL}/products/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` },
       });
