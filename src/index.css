@@ -1,0 +1,204 @@
+:root {
+  /* Colors */
+  --bg-page: #F5F0E8;        /* Cream Paper */
+  --bg-primary: #1A1A2E;     /* Midnight Navy */
+  --bg-secondary: #2C2C3E;   /* Deep Charcoal */
+  --accent-primary: #C0392B; /* Race Red */
+  --accent-secondary: #FFFFFF;
+  --accent-glow: rgba(192, 57, 43, 0.4);
+  --badge-color: #B8960C;    /* Burnished Gold */
+  --border-color: #DDD8CE;   /* Warm Ash */
+  
+  --text-primary: #1A1A2E;   /* Midnight Navy (Main Text) */
+  --text-secondary: #A09880; /* Asphalt Grey */
+  --text-on-dark: #FFFFFF;   /* White text for dark panels */
+  
+  /* Glassmorphism / Dark Panels */
+  --glass-bg: rgba(44, 44, 62, 0.98); /* Deep Charcoal Solid/Glass */
+  --glass-border: #DDD8CE;
+  --glass-blur: blur(8px);
+
+  /* Typography */
+  --font-main: 'Outfit', sans-serif;
+  --font-display: 'Syncopate', sans-serif;
+
+  /* Transitions */
+  --transition-fast: 0.2s ease;
+  --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  font-family: var(--font-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+input, textarea, select {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.8rem 1rem;
+  color: var(--text-on-dark);
+  font-family: var(--font-main);
+  outline: none;
+  transition: var(--transition-fast);
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 5px var(--accent-glow);
+}
+
+/* Typography Utility Classes */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Reusable Components */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  color: var(--text-on-dark);
+}
+
+.btn-primary {
+  background-color: var(--accent-primary);
+  color: #fff;
+  padding: 12px 28px;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: var(--transition-smooth);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 25px var(--accent-glow);
+}
+
+.btn-primary:hover::before {
+  left: 100%;
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--text-primary);
+  padding: 12px 28px;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  border: 1px solid var(--glass-border);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--text-primary);
+}
+
+/* Layout Utilities */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 16px;
+  }
+  
+  h1 {
+    font-size: 2.25rem !important;
+    letter-spacing: 1px !important;
+  }
+  
+  h2 {
+    font-size: 1.75rem !important;
+    letter-spacing: 1px !important;
+  }
+
+  section {
+    padding: 3.5rem 0 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.85rem !important;
+  }
+  
+  h2 {
+    font-size: 1.45rem !important;
+  }
+  
+  h3 {
+    font-size: 1.2rem !important;
+  }
+  
+  body {
+    font-size: 0.9rem;
+  }
+  
+  .btn-primary, .btn-outline {
+    padding: 10px 20px;
+    font-size: 0.8rem;
+  }
+}
+
+select option {
+  background: var(--bg-secondary);
+  color: var(--text-on-dark);
+}

@@ -1,0 +1,153 @@
+.about-page {
+  padding-top: 140px;
+  padding-bottom: 6rem;
+}
+
+.about-hero {
+  margin-bottom: 5rem;
+}
+
+.about-hero h1 {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+}
+
+.about-hero .subtitle {
+  color: var(--text-secondary);
+  font-size: 1.25rem;
+  max-width: 700px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Story Grid */
+.about-story-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 4rem;
+  align-items: center;
+  margin-bottom: 6rem;
+}
+
+.story-content h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+}
+
+.story-content p {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.story-image-placeholder {
+  height: 400px;
+  background: linear-gradient(135deg, #1f1f1f 0%, #111111 100%);
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.story-image-placeholder::before {
+  content: '';
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle, rgba(192, 57, 43, 0.1) 0%, transparent 60%);
+  top: -25%; left: -25%;
+}
+
+.image-overlay-content {
+  position: relative;
+  z-index: 2;
+}
+
+.est-tag {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: 4px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  padding: 1rem 2rem;
+}
+
+/* Craftsmanship */
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 3rem;
+}
+
+.craft-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
+}
+
+.craft-card {
+  padding: 3rem 2rem;
+  text-align: center;
+  transition: var(--transition-smooth);
+}
+
+.craft-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(255,255,255,0.15);
+}
+
+.craft-icon-container {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 1.5rem;
+  color: var(--accent-primary);
+  transition: var(--transition-fast);
+}
+
+.craft-card:hover .craft-icon-container {
+  background: var(--accent-primary);
+  color: white;
+  box-shadow: 0 0 15px var(--accent-glow);
+  transform: scale(1.1);
+}
+
+.craft-card h3 {
+  font-size: 1.15rem;
+  margin-bottom: 1rem;
+}
+
+.craft-card p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .about-page {
+    padding-top: 100px;
+    padding-bottom: 4rem;
+  }
+
+  .about-story-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .story-image-placeholder {
+    height: 250px;
+    order: -1;
+  }
+
+  .about-hero h1 {
+    font-size: 2.5rem;
+  }
+}
