@@ -3,7 +3,6 @@ import { useParams, Link } from 'react-router-dom';
 import { Star, Shield, Truck, AlertCircle, ArrowLeft, X } from 'lucide-react';
 import API_URL from '../config';
 import { getImageUrl } from '../utils/image';
-import PromoBanner from '../components/PromoBanner';
 import './ProductDetails.css';
 
 interface Product {

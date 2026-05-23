@@ -1,6 +1,5 @@
 import React from 'react';
 import { Shield, Truck, Award, Hammer } from 'lucide-react';
-import PromoBanner from '../components/PromoBanner';
 import './About.css';
 
 const About: React.FC = () => {

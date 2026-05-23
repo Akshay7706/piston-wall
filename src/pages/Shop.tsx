@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Filter, Star, Eye } from 'lucide-react';
+import { Star, Eye } from 'lucide-react';
 import API_URL from '../config';
 import { getImageUrl } from '../utils/image';
-import PromoBanner from '../components/PromoBanner';
 import './Shop.css';
 
 export interface Product {
