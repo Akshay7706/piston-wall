@@ -2,11 +2,30 @@ import { PrismaClient } from '@prisma/client';
 import path from 'path';
 import fs from 'fs';
 
-// Find the read-only database template file
-let templateDbPath = path.resolve(__dirname, '..', '..', '..', 'prisma', 'dev.db');
-if (!fs.existsSync(templateDbPath)) {
-  templateDbPath = path.resolve(__dirname, '..', '..', 'prisma', 'dev.db');
-}
+// Function to find the template database
+const findTemplateDb = () => {
+  const possiblePaths = [
+    // Relative to dist/src/utils/prisma.js
+    path.resolve(__dirname, '..', '..', '..', 'prisma', 'dev.db'),
+    path.resolve(__dirname, '..', '..', 'prisma', 'dev.db'),
+    // Relative to project root
+    path.join(process.cwd(), 'backend', 'prisma', 'dev.db'),
+    path.join(process.cwd(), 'prisma', 'dev.db'),
+    // Direct
+    '/var/task/backend/prisma/dev.db',
+    '/var/task/prisma/dev.db'
+  ];
+
+  for (const p of possiblePaths) {
+    if (fs.existsSync(p)) {
+      console.log(`Found database template at: ${p}`);
+      return p;
+    }
+  }
+  return null;
+};
+
+const templateDbPath = findTemplateDb();
 
 const envUrl = process.env.DATABASE_URL;
 const isRemoteOrCustomDb = envUrl && !envUrl.startsWith('file:./') && !envUrl.startsWith('file:dev.db');
@@ -22,19 +41,22 @@ if (isRemoteOrCustomDb) {
     try {
       // Copy the database file to /tmp if it doesn't exist or is empty
       if (!fs.existsSync(tmpDbPath) || fs.statSync(tmpDbPath).size === 0) {
-        console.log(`Copying database template from ${templateDbPath} to ${tmpDbPath}`);
-        fs.copyFileSync(templateDbPath, tmpDbPath);
-        // Give write permission
-        fs.chmodSync(tmpDbPath, 0o666);
+        if (templateDbPath) {
+          console.log(`Copying database template from ${templateDbPath} to ${tmpDbPath}`);
+          fs.copyFileSync(templateDbPath, tmpDbPath);
+          fs.chmodSync(tmpDbPath, 0o666);
+        } else {
+          console.error('CRITICAL: Database template not found! SQLite will fail.');
+        }
       }
       dbUrl = `file:${tmpDbPath}`;
     } catch (err) {
-      console.error('Failed to setup database in /tmp, falling back to bundled read-only database:', err);
-      dbUrl = `file:${templateDbPath}`;
+      console.error('Failed to setup database in /tmp:', err);
+      dbUrl = templateDbPath ? `file:${templateDbPath}` : 'file:/tmp/dev.db';
     }
   } else {
-    // Local development: use the direct database file
-    dbUrl = `file:${templateDbPath}`;
+    // Local development
+    dbUrl = templateDbPath ? `file:${templateDbPath}` : 'file:./prisma/dev.db';
   }
 }
 
@@ -49,4 +71,3 @@ const prisma = new PrismaClient({
 });
 
 export default prisma;
-

@@ -39,8 +39,16 @@ export const login = async (req: Request, res: Response) => {
         role: user.role,
       },
     });
-  } catch (error) {
-    console.error('Login error:', error);
-    res.status(500).json({ message: 'Internal server error' });
+  } catch (error: any) {
+    console.error('Login error full details:', {
+      message: error.message,
+      code: error.code,
+      stack: error.stack,
+      env: process.env.NODE_ENV
+    });
+    res.status(500).json({ 
+      message: 'Internal server error', 
+      debug: process.env.NODE_ENV === 'development' ? error.message : undefined 
+    });
   }
 };
