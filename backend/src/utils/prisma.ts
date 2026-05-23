@@ -11,56 +11,53 @@ const findTemplateDb = () => {
     // Relative to project root
     path.join(process.cwd(), 'backend', 'prisma', 'dev.db'),
     path.join(process.cwd(), 'prisma', 'dev.db'),
-    // Direct
+    // Direct Vercel paths
     '/var/task/backend/prisma/dev.db',
     '/var/task/prisma/dev.db'
   ];
 
   for (const p of possiblePaths) {
-    if (fs.existsSync(p)) {
-      console.log(`Found database template at: ${p}`);
-      return p;
-    }
+    try {
+      if (fs.existsSync(p)) {
+        console.log(`Found database template at: ${p}`);
+        return p;
+      }
+    } catch (e) {}
   }
   return null;
 };
 
-const templateDbPath = findTemplateDb();
-
-const envUrl = process.env.DATABASE_URL;
-const isRemoteOrCustomDb = envUrl && !envUrl.startsWith('file:./') && !envUrl.startsWith('file:dev.db');
-
 let dbUrl = '';
+const envUrl = process.env.DATABASE_URL;
 
-if (isRemoteOrCustomDb) {
-  dbUrl = envUrl!;
+if (envUrl && !envUrl.startsWith('file:')) {
+  dbUrl = envUrl;
 } else {
-  // Check if we are running on Vercel (or in a serverless read-only environment)
   if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
     const tmpDbPath = '/tmp/dev.db';
+    const templateDbPath = findTemplateDb();
+    
     try {
-      // Copy the database file to /tmp if it doesn't exist or is empty
       if (!fs.existsSync(tmpDbPath) || fs.statSync(tmpDbPath).size === 0) {
         if (templateDbPath) {
           console.log(`Copying database template from ${templateDbPath} to ${tmpDbPath}`);
           fs.copyFileSync(templateDbPath, tmpDbPath);
           fs.chmodSync(tmpDbPath, 0o666);
-        } else {
-          console.error('CRITICAL: Database template not found! SQLite will fail.');
         }
       }
       dbUrl = `file:${tmpDbPath}`;
     } catch (err) {
       console.error('Failed to setup database in /tmp:', err);
-      dbUrl = templateDbPath ? `file:${templateDbPath}` : 'file:/tmp/dev.db';
+      dbUrl = templateDbPath ? `file:${templateDbPath}` : `file:${tmpDbPath}`;
     }
   } else {
-    // Local development
+    const templateDbPath = findTemplateDb();
     dbUrl = templateDbPath ? `file:${templateDbPath}` : 'file:./prisma/dev.db';
   }
 }
 
-console.log(`Prisma is connecting to database at URL: ${dbUrl}`);
+console.log(`Prisma final connection URL: ${dbUrl}`);
+process.env.DATABASE_URL = dbUrl; // Force env var for Prisma internal use
 
 const prisma = new PrismaClient({
   datasources: {
