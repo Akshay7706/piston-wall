@@ -1,3 +1,5 @@
+console.log('SERVER STARTING...');
+
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
@@ -5,6 +7,8 @@ import path from 'path';
 import fs from 'fs';
 
 dotenv.config();
+
+console.log('DOTENV CONFIGURED');
 
 process.on('uncaughtException', (err) => {
   console.error('UNCAUGHT EXCEPTION:', err);
