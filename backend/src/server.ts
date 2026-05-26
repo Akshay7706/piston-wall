@@ -22,7 +22,7 @@ app.use((req, res, next) => {
 app.get('/api/health', (req, res) => {
   const info: any = {
     status: 'ok',
-    message: 'API is alive - ROUTES DISABLED FOR DEBUGGING',
+    message: 'API is alive',
     cwd: process.cwd(),
     __dirname: __dirname,
     env: {
@@ -54,8 +54,7 @@ app.get('/api/health', (req, res) => {
   res.json(info);
 });
 
-// Import routes COMMENTED OUT for debugging
-/*
+// Import routes
 import authRoutes from './routes/authRoutes';
 import productRoutes from './routes/productRoutes';
 import orderRoutes from './routes/orderRoutes';
@@ -67,7 +66,6 @@ app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/messages', messageRoutes);
 app.use('/api/settings', settingsRoutes);
-*/
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
